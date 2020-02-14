@@ -1,0 +1,42 @@
+\form#0:$ k $
+\form#1:$ A $
+\form#2:$ V $
+\form#3:$ A V = D V $
+\form#4:$ A V = D B V $
+\form#5:$ A = V D V^{-1} $
+\form#6:$ A^{1/2} = V D^{1/2} V^{-1} $
+\form#7:$ V D^{-1/2} V^{-1} $
+\form#8:$ CINV = (C * C^T)^{-1} * C $
+\form#9:$ 1/2((Ax).x) - bx $
+\form#10:$ Cx \le f $
+\form#11:$ A x = b $
+\form#12:$ (V+U)(V-U)^{-1} $
+\form#13:$ \exp(A) $
+\form#14:$ A = 0 $
+\form#15:$ \exp(2^{-\mbox{squarings}}M) $
+\form#16:$ M = 0 $
+\form#17:\[ \sum_{k=i}^m A_{ik} X_{kj} + \sum_{k=1}^j X_{ik} B_{kj} = C_{ij}. \]
+\form#18:\[ X_{ij} = \frac{1}{A_{ii} + B_{jj}} \Bigl( C_{ij} - \sum_{k=i+1}^m A_{ik} X_{kj} - \sum_{k=1}^{j-1} X_{ik} B_{kj} \Bigr). \]
+\form#19:$ i=m,\ldots,1 $
+\form#20:$ j=1,\ldots,n $
+\form#21:$ A^p $
+\form#22:$ 1 + 3x^2 $
+\form#23:$ [ 1, 0, 3 ] $
+\form#24:$ |x| \le 1 $
+\form#25:$ 3 + x^2 $
+\form#26:$ [ 3, 0, 1 ] $
+\form#27:\begin{align*} C(u) & = \sum_{i=0}^{n}N_{i,p}(u)P_i \end{align*}
+\form#28:$u$
+\form#29:\begin{align*} C(u) & = \sum_{i=0}^{n}N_{i,p}P_i \end{align*}
+\form#30:$u \in [0;1]$
+\form#31:\begin{align*} \frac{d^i}{du^i}C(u) & = \sum_{i=0}^{n} \frac{d^i}{du^i} N_{i,p}(u)P_i \end{align*}
+\form#32:$p+1$
+\form#33:$P_i$
+\form#34:$p$
+\form#35:\begin{align*} N_{i,p}(u), \hdots, N_{i+p+1,p}(u) \end{align*}
+\form#36:\begin{align*} \frac{d^i}{du^i} N_{i,p}(u), \hdots, \frac{d^i}{du^i} N_{i+p+1,p}(u) \end{align*}
+\form#37:\begin{align*} u_0 & = \hdots = u_p = 0 \\ u_{m-p} & = \hdots = u_{m} = 1 \\ u_{j+p} & = \frac{1}{p}\sum_{i=j}^{j+p-1}\bar{u}_i \quad\quad j=1,\hdots,n-p \end{align*}
+\form#38:$m+1$
+\form#39:$ \Vert A x - b \Vert $
+\form#40:\[ A = U S V^* \]
+\form#41:$ O(n^2p) $
