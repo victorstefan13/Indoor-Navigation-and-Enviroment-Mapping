@@ -122,6 +122,11 @@ public:
     std::vector<MapPoint*> GetTrackedMapPoints();
     std::vector<cv::KeyPoint> GetTrackedKeyPointsUn();
 
+    //TCP Socket
+    int initSocket();
+    void fetchMsg(char buffer[4096], int clientSocket);
+    void closeSess(int clientSocket);
+
 private:
 
     // Input sensor

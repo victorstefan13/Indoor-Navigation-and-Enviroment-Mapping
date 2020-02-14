@@ -20,7 +20,7 @@ int main(int argc, char **argv)
      cerr << endl << "Usage: ./path_to_PF_ORB path_to_vocabulary path_to_settings path_to_dev_video" << endl;
      return 1;
    }
-   cv::VideoCapture cap(1);
+   cv::VideoCapture cap(0);
    if (!cap.isOpened())
    {
      cerr << endl  <<"Could not open camera feed."  << endl;
@@ -32,8 +32,8 @@ int main(int argc, char **argv)
    cout << endl << "-------" << endl;
    cout << "Start processing sequence ..." << endl;
 
-   // initialise TCP socket and set up buffer for message
-   //int clientSock = SLAM.initSocket();
+   //initialise TCP socket and set up buffer for message
+   int clientSock = SLAM.initSocket();
    char buf[4096];
 
    // Main loop
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
      SLAM.TrackMonocular(frame, timeStamps);
 
      //fetch the message from the python DL model
-     //SLAM.fetchMsg(buf, clientSock);
+     SLAM.fetchMsg(buf, clientSock);
     }
 
    // Stop all threads

@@ -26,6 +26,16 @@
 #include <pangolin/pangolin.h>
 #include <iomanip>
 
+//TCP socket lib
+#include <iostream>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <string.h>
+#include <string>
+
 namespace ORB_SLAM2
 {
 
@@ -487,6 +497,98 @@ vector<cv::KeyPoint> System::GetTrackedKeyPointsUn()
 {
     unique_lock<mutex> lock(mMutexState);
     return mTrackedKeyPointsUn;
+}
+
+//TCP Socket
+int System::initSocket()
+{
+    // Create a socket
+    int listening = socket(AF_INET, SOCK_STREAM, 0);
+    if (listening == -1)
+    {
+        std::cerr << "Can't create a socket! Quitting" << endl;
+        return -1;
+    }
+ 
+    // Bind the ip address and port to a socket
+    sockaddr_in hint;
+    hint.sin_family = AF_INET;
+    hint.sin_port = htons(54000);
+    inet_pton(AF_INET, "0.0.0.0", &hint.sin_addr);
+ 
+    bind(listening, (sockaddr*)&hint, sizeof(hint));
+ 
+    // Tell Winsock the socket is for listening
+    listen(listening, SOMAXCONN);
+ 
+    // Wait for a connection
+    sockaddr_in client;
+    socklen_t clientSize = sizeof(client);
+ 
+    int clientSocket = accept(listening, (sockaddr*)&client, &clientSize);
+ 
+    char host[NI_MAXHOST];      // Client's remote name
+    char service[NI_MAXSERV];   // Service (i.e. port) the client is connect on
+ 
+    memset(host, 0, NI_MAXHOST); // same as memset(host, 0, NI_MAXHOST);
+    memset(service, 0, NI_MAXSERV);
+ 
+    if (getnameinfo((sockaddr*)&client, sizeof(client), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
+    {
+        std::cout << host << " connected on port " << service << endl;
+        std::cout << "Waiting for data!" << endl;
+    }
+    else
+    {
+        inet_ntop(AF_INET, &client.sin_addr, host, NI_MAXHOST);
+        std::cout << host << " connected on port " << ntohs(client.sin_port) << endl;
+        std::cout << "Waiting for data!" << endl;
+    }
+
+    // Close listening socket
+    close(listening);
+
+    return clientSocket;
+}
+
+void System::fetchMsg(char buffer[4096], int clientSocket)
+{    
+    memset(buffer, 0, 4096);
+
+    // Wait for client to send data
+    int bytesReceived = recv(clientSocket, buffer, 4096, 0);
+    if (bytesReceived == -1)
+    {
+        std::cerr << "Error in recv(). Quitting" << endl;
+        //break;
+    }
+
+    if (bytesReceived == 0)
+    {
+        std::cout << "Client disconnected " << endl;
+        //break;
+    }
+
+    string data = string(buffer, 0, bytesReceived);
+    std::cout << data << endl;
+
+    // Echo message back to client
+    send(clientSocket, buffer, bytesReceived + 1, 0);
+ 
+    // Close the socket
+    // if(data == "404")
+    // {
+    //     closeSess(clientSocket);
+    // }
+ 
+    return;
+
+}
+
+void System::closeSess(int clientSocket)
+{
+    // Close the socket
+    close(clientSocket);
 }
 
 } //namespace ORB_SLAM
