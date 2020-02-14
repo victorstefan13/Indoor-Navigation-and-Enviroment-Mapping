@@ -20,7 +20,7 @@ int main(int argc, char **argv)
      cerr << endl << "Usage: ./path_to_PF_ORB path_to_vocabulary path_to_settings path_to_dev_video" << endl;
      return 1;
    }
-   cv::VideoCapture cap(0);
+   cv::VideoCapture cap(1);
    if (!cap.isOpened())
    {
      cerr << endl  <<"Could not open camera feed."  << endl;
