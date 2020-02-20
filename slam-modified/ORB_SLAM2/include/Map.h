@@ -52,6 +52,11 @@ public:
     std::vector<MapPoint*> GetAllMapPoints();
     std::vector<MapPoint*> GetReferenceMapPoints();
 
+    // Function to manage the current points to color them in green when an object is detected
+    void AddCurrentMapPoint(MapPoint *pMP);        // add
+    void EraseCurrentMapPoint();                   // delete
+    std::vector<MapPoint *> GetCurrentMapPoints(); // get
+
     long unsigned int MapPointsInMap();
     long unsigned  KeyFramesInMap();
 
@@ -69,6 +74,8 @@ public:
 protected:
     std::set<MapPoint*> mspMapPoints;
     std::set<KeyFrame*> mspKeyFrames;
+
+    std::set<MapPoint *> mspCurrentMapPoints; // Current map points
 
     std::vector<MapPoint*> mvpReferenceMapPoints;
 
