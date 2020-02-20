@@ -32,10 +32,6 @@ int main(int argc, char **argv)
    cout << endl << "-------" << endl;
    cout << "Start processing sequence ..." << endl;
 
-   //initialise TCP socket and set up buffer for message
-   int clientSock = SLAM.initSocket();
-   char buf[4096];
-
    // Main loop
    int timeStamps=0;
    for(;;timeStamps++)
@@ -48,9 +44,6 @@ int main(int argc, char **argv)
 
      // Pass the image to the SLAM system
      SLAM.TrackMonocular(frame, timeStamps);
-
-     //fetch the message from the python DL model
-     SLAM.fetchMsg(buf, clientSock);
     }
 
    // Stop all threads
