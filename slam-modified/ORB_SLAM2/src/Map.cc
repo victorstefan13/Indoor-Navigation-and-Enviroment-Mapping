@@ -128,6 +128,27 @@ void Map::clear()
     mnMaxKFid = 0;
     mvpReferenceMapPoints.clear();
     mvpKeyFrameOrigins.clear();
+    mspCurrentMapPoints.clear();
+}
+
+//functions for the object detector. These are designed to capture the current 
+//map points when slam recieves data from the object detection software
+void Map::AddCurrentMapPoint(MapPoint *pMP)
+{
+    unique_lock<mutex> lock(mMutexMap);
+    mspCurrentMapPoints.insert(pMP);
+}
+
+void Map::EraseCurrentMapPoint()
+{
+    unique_lock<mutex> lock(mMutexMap);
+    mspCurrentMapPoints.clear();
+}
+
+vector<MapPoint *> Map::GetCurrentMapPoints()
+{
+    unique_lock<mutex> lock(mMutexMap);
+    return vector<MapPoint *>(mspCurrentMapPoints.begin(), mspCurrentMapPoints.end());
 }
 
 } //namespace ORB_SLAM
