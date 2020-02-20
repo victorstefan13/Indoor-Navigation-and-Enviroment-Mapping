@@ -33,6 +33,8 @@
 #include"Optimizer.h"
 #include"PnPsolver.h"
 
+#include "socket.h"
+
 #include<iostream>
 
 #include<mutex>
@@ -48,8 +50,10 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
     mpKeyFrameDB(pKFDB), mpInitializer(static_cast<Initializer*>(NULL)), mpSystem(pSys), mpViewer(NULL),
     mpFrameDrawer(pFrameDrawer), mpMapDrawer(pMapDrawer), mpMap(pMap), mnLastRelocFrameId(0)
 {
-    // Load camera parameters from settings file
+    //initiate the socket 
+    clientSocket = initSocket();
 
+    // Load camera parameters from settings file
     cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);
     float fx = fSettings["Camera.fx"];
     float fy = fSettings["Camera.fy"];
@@ -266,6 +270,11 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
 
 void Tracking::Track()
 {
+    //fetch the data from the object detector and output it to terminal
+    detection = fetchMsg(buf, clientSocket);
+
+    cout << detection << endl;
+
     if(mState==NO_IMAGES_YET)
     {
         mState = NOT_INITIALIZED;
@@ -416,6 +425,20 @@ void Tracking::Track()
 
         // Update drawer
         mpFrameDrawer->Update(this);
+
+        //mark the curent map points green if there is a detection
+        if (detection == 1)
+        {
+           // Add the current map points in the vector
+            for (int i = 0; i < mCurrentFrame.N; i++)
+            {
+                if (mCurrentFrame.mvpMapPoints[i] && !mCurrentFrame.mvbOutlier[i])
+                {
+                    mpMap->AddCurrentMapPoint(mCurrentFrame.mvpMapPoints[i]);
+                }
+            }
+
+        }
 
         // If tracking were good, check if we insert a keyframe
         if(bOK)
