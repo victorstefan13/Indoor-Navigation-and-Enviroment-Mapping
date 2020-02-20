@@ -115,6 +115,11 @@ public:
 
     void Reset();
 
+    //TCP socket
+    int clientSocket;
+    int detection;
+    char buf[4096];
+
 protected:
 
     // Main tracking function. It is independent of the input sensor.
