@@ -38,13 +38,15 @@ MapDrawer::MapDrawer(Map* pMap, const string &strSettingPath):mpMap(pMap)
     mPointSize = fSettings["Viewer.PointSize"];
     mCameraSize = fSettings["Viewer.CameraSize"];
     mCameraLineWidth = fSettings["Viewer.CameraLineWidth"];
-
 }
 
 void MapDrawer::DrawMapPoints()
 {
     const vector<MapPoint*> &vpMPs = mpMap->GetAllMapPoints();
     const vector<MapPoint*> &vpRefMPs = mpMap->GetReferenceMapPoints();
+
+    //get current map points for object detector
+    const vector<MapPoint*> &vpCurrentMPs = mpMap->GetCurrentMapPoints();
 
     set<MapPoint*> spRefMPs(vpRefMPs.begin(), vpRefMPs.end());
 
@@ -63,7 +65,7 @@ void MapDrawer::DrawMapPoints()
         glVertex3f(pos.at<float>(0),pos.at<float>(1),pos.at<float>(2));
     }
     glEnd();
-
+    
     glPointSize(mPointSize);
     glBegin(GL_POINTS);
     glColor3f(1.0,0.0,0.0);
@@ -78,6 +80,22 @@ void MapDrawer::DrawMapPoints()
     }
 
     glEnd();
+
+    // Define points for marking the object detected
+    glPointSize(5);
+    glBegin(GL_POINTS);
+    glColor3f(0.0, 1.0, 0.0);
+
+    // All map points for the object detected
+    for (std::vector<MapPoint *>::const_iterator i = vpCurrentMPs.begin(); i != vpCurrentMPs.end(); i++)
+    {
+        if ((*i)->isBad())
+            continue;
+        cv::Mat pos = (*i)->GetWorldPos();
+        glVertex3f(pos.at<float>(0), pos.at<float>(1), pos.at<float>(2));
+    }
+    glEnd();
+
 }
 
 void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph)
