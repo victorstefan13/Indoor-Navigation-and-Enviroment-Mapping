@@ -54,6 +54,11 @@ private:
     float mCameraSize;
     float mCameraLineWidth;
 
+    //TCP socket
+    // int clientSocket;
+    // int detection;
+    // char buf[4096];
+
     cv::Mat mCameraPose;
 
     std::mutex mMutexCamera;
