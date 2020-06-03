@@ -6,3 +6,6 @@ camera, DNN (Deep Neural Networks) for object detection and SLAM (Simultaneous L
 localisation. The system is used through internal environments and correctly detect doors within such environments, acknowledging the#
 doors and pinpointing them on the map produced by the SLAM algorithm. Network programming is used to bind the DNN and SLAM algorithm
 together and the distance from the user to the detected door is estimated using the information collected though the object detector.
+
+The paper written on this project can be found at:
+https://www.linkedin.com/in/victor-efrim/detail/treasury/education:372287681/?entityUrn=urn%3Ali%3Afsd_profileTreasuryMedia%3A(ACoAABmiFDABFBg6Rx8nknGf1SGL0qaYYKEGh78%2C1588864178030)&section=education%3A372287681&treasuryCount=1
